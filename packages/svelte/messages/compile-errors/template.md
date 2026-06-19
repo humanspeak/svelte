@@ -365,6 +365,18 @@ HTML restricts where certain elements can appear. In case of a violation the bro
 
 > This snippet is shadowing the prop `%prop%` with the same name
 
+## scoped_directive_invalid_placement
+
+> `scoped:` directive can only be used on components
+
+## scoped_directive_invalid_modifier
+
+> `scoped:` directive cannot use modifiers
+
+## scoped_directive_missing_value
+
+> `scoped:` directive must have a value
+
 ## style_directive_invalid_modifier
 
 > `style:` directive can only use the `important` modifier

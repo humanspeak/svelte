@@ -8,6 +8,7 @@ import { add_svelte_meta, build_bind_this, Memoizer, validate_binding } from '..
 import { build_attribute_value } from '../shared/element.js';
 import { build_event_handler } from './events.js';
 import { determine_slot } from '../../../../../utils/slot.js';
+import { build_scoped_class_value } from '../../../utils.js';
 
 /**
  * @param {AST.Component | AST.SvelteComponent | AST.SvelteSelf} node
@@ -144,8 +145,10 @@ export function build_component(node, component_name, loc, context) {
 			} else {
 				props_and_spreads.push(expression);
 			}
-		} else if (attribute.type === 'Attribute') {
+		} else if (attribute.type === 'Attribute' || attribute.type === 'ScopedClassDirective') {
 			if (attribute.name.startsWith('--')) {
+				if (attribute.type === 'ScopedClassDirective') continue;
+
 				custom_css_props.push(
 					b.init(
 						attribute.name,
@@ -168,7 +171,7 @@ export function build_component(node, component_name, loc, context) {
 				has_children_prop = true;
 			}
 
-			const { value, has_state } = build_attribute_value(
+			let { value, has_state } = build_attribute_value(
 				attribute.value,
 				context,
 				(value, metadata) => {
@@ -190,6 +193,10 @@ export function build_component(node, component_name, loc, context) {
 					return value !== memoized ? b.call('$.get', memoized) : value;
 				}
 			);
+
+			if (attribute.type === 'ScopedClassDirective' && context.state.analysis.css.hash) {
+				value = build_scoped_class_value(value, context.state.analysis.css.hash);
+			}
 
 			if (has_state) {
 				push_prop(b.get(attribute.name, [b.return(value)]));

@@ -18,6 +18,9 @@ import { is_resolved_snippet } from './snippets.js';
  */
 export function visit_component(node, context) {
 	node.metadata.path = [...context.path];
+	if (node.attributes.some((attribute) => attribute.type === 'ScopedClassDirective')) {
+		context.state.analysis.scoped_class_nodes.push(node);
+	}
 
 	// link this node to all the snippets that it could render, so that we can prune CSS correctly
 	node.metadata.snippets = new Set();
@@ -75,6 +78,7 @@ export function visit_component(node, context) {
 			attribute.type !== 'SpreadAttribute' &&
 			attribute.type !== 'LetDirective' &&
 			attribute.type !== 'OnDirective' &&
+			attribute.type !== 'ScopedClassDirective' &&
 			attribute.type !== 'BindDirective' &&
 			attribute.type !== 'AttachTag'
 		) {

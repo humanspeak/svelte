@@ -2,7 +2,7 @@
 /** @import { Csp, RenderOutput } from '#server' */
 /** @import { Store } from '#shared' */
 export { FILENAME, HMR } from '../../constants.js';
-import { attr, clsx, to_class, to_style } from '../shared/attributes.js';
+import { attr, clsx, scoped_class, to_class, to_style } from '../shared/attributes.js';
 import { is_promise, noop } from '../shared/utils.js';
 import { subscribe_to_store } from '../../store/utils.js';
 import {
@@ -459,7 +459,7 @@ export function props_id(renderer) {
 	return uid;
 }
 
-export { attr, clsx };
+export { attr, clsx, scoped_class };
 
 export { html } from './blocks/html.js';
 

@@ -1,0 +1,7 @@
+.active.svelte-xyz {
+		color: green;
+	}
+
+	.dimmed.svelte-xyz {
+		opacity: 0.5;
+	}

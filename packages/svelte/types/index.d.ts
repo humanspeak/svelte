@@ -1393,6 +1393,16 @@ declare module 'svelte/compiler' {
 			modifiers: Array<'important'>;
 		}
 
+		/** A `scoped:` directive */
+		export interface ScopedClassDirective extends BaseAttribute {
+			type: 'ScopedClassDirective';
+			/** The 'x' in `scoped:x` */
+			name: string;
+			/** The 'y' in `scoped:x={y}` */
+			value: true | ExpressionTag | Array<ExpressionTag | Text>;
+			modifiers: string[];
+		}
+
 		// TODO have separate in/out/transition directives
 		/** A `transition:`, `in:` or `out:` directive */
 		export interface TransitionDirective extends BaseAttribute {
@@ -1588,6 +1598,7 @@ declare module 'svelte/compiler' {
 			| AST.ClassDirective
 			| AST.LetDirective
 			| AST.OnDirective
+			| AST.ScopedClassDirective
 			| AST.StyleDirective
 			| AST.TransitionDirective
 			| AST.UseDirective;

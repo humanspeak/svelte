@@ -1374,6 +1374,10 @@ export function create_scopes(ast, root, allow_reactive_declarations, parent) {
 				state.scope.reference(b.id(node.name), path.concat(node));
 			}
 			next();
+		},
+
+		ScopedClassDirective(node, context) {
+			context.next();
 		}
 
 		// TODO others

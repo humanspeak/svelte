@@ -63,6 +63,7 @@ import { RegularElement } from './visitors/RegularElement.js';
 import { RenderTag } from './visitors/RenderTag.js';
 import { SlotElement } from './visitors/SlotElement.js';
 import { SnippetBlock } from './visitors/SnippetBlock.js';
+import { ScopedClassDirective } from './visitors/ScopedClassDirective.js';
 import { SpreadAttribute } from './visitors/SpreadAttribute.js';
 import { SpreadElement } from './visitors/SpreadElement.js';
 import { StyleDirective } from './visitors/StyleDirective.js';
@@ -183,6 +184,7 @@ const visitors = {
 	PropertyDefinition,
 	RegularElement,
 	RenderTag,
+	ScopedClassDirective,
 	SlotElement,
 	SnippetBlock,
 	SpreadAttribute,
@@ -492,6 +494,7 @@ export function analyze_component(root, source, options) {
 		template,
 		comments: root.comments,
 		elements: [],
+		scoped_class_nodes: [],
 		runes,
 		// if we are not in runes mode but we have no reserved references ($$props, $$restProps)
 		// and no `export let` we might be in a wannabe runes component that is using runes in an external
@@ -866,7 +869,7 @@ export function analyze_component(root, source, options) {
 		analyze_css(analysis.css.ast, analysis);
 
 		// mark nodes as scoped/unused/empty etc
-		prune(analysis.css.ast, analysis.elements);
+		prune(analysis.css.ast, [...analysis.elements, ...analysis.scoped_class_nodes]);
 
 		const { comment } = analysis.css.ast.content;
 		const should_ignore_unused =
