@@ -91,13 +91,7 @@ export function build_inline_component(node, expression, context) {
 			let expression = /** @type {Expression} */ (context.visit(attribute));
 			props_and_spreads.push(optimiser.transform(expression, attribute.metadata.expression));
 		} else if (attribute.type === 'Attribute' || attribute.type === 'ScopedClassDirective') {
-			let value = build_attribute_value(
-				attribute.value,
-				context,
-				optimiser.transform,
-				false,
-				true
-			);
+			let value = build_attribute_value(attribute.value, context, optimiser.transform, false, true);
 
 			if (attribute.name.startsWith('--')) {
 				if (attribute.type === 'ScopedClassDirective') continue;

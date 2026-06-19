@@ -305,6 +305,18 @@ HTML restricts where certain elements can appear. In case of a violation the bro
 
 > cannot use spread arguments in `{@render ...}` tags
 
+## scoped_directive_invalid_modifier
+
+> `scoped:` directive cannot use modifiers
+
+## scoped_directive_invalid_placement
+
+> `scoped:` directive can only be used on components
+
+## scoped_directive_missing_value
+
+> `scoped:` directive must have a value
+
 ## script_duplicate
 
 > A component can have a single top-level `<script>` element and/or a single top-level `<script module>` element
@@ -364,18 +376,6 @@ HTML restricts where certain elements can appear. In case of a violation the bro
 ## snippet_shadowing_prop
 
 > This snippet is shadowing the prop `%prop%` with the same name
-
-## scoped_directive_invalid_placement
-
-> `scoped:` directive can only be used on components
-
-## scoped_directive_invalid_modifier
-
-> `scoped:` directive cannot use modifiers
-
-## scoped_directive_missing_value
-
-> `scoped:` directive must have a value
 
 ## style_directive_invalid_modifier
 

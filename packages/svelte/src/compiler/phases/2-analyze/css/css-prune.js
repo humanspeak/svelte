@@ -743,9 +743,7 @@ function attribute_matches(node, name, expected_value, operator, case_insensitiv
 				attribute.value.length === 1 &&
 				attribute.value[0].type === 'Text'
 			) {
-				if (
-					test_attribute(operator, expected_value, case_insensitive, attribute.value[0].data)
-				) {
+				if (test_attribute(operator, expected_value, case_insensitive, attribute.value[0].data)) {
 					return true;
 				}
 
