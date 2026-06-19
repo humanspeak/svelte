@@ -10,7 +10,7 @@ export default test({
 		component.active = false;
 		flushSync();
 
-		assert.htmlEqual(target.innerHTML, `<p class="">child</p>`);
+		assert.htmlEqual(target.innerHTML, `<p>child</p>`);
 
 		component.active = true;
 		flushSync();
