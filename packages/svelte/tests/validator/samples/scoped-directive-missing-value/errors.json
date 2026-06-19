@@ -1,0 +1,14 @@
+[
+	{
+		"message": "`scoped:` directive must have a value",
+		"code": "scoped_directive_missing_value",
+		"start": {
+			"line": 5,
+			"column": 7
+		},
+		"end": {
+			"line": 5,
+			"column": 19
+		}
+	}
+]

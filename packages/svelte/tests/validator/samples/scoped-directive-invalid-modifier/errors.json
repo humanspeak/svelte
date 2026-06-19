@@ -1,0 +1,14 @@
+[
+	{
+		"message": "`scoped:` directive cannot use modifiers",
+		"code": "scoped_directive_invalid_modifier",
+		"start": {
+			"line": 5,
+			"column": 7
+		},
+		"end": {
+			"line": 5,
+			"column": 38
+		}
+	}
+]

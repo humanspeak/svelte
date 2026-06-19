@@ -11,6 +11,7 @@ import { get_attribute_chunks, is_text_attribute } from '../../../utils/ast.js';
 
 /** @typedef {typeof NODE_PROBABLY_EXISTS | typeof NODE_DEFINITELY_EXISTS} NodeExistsValue */
 /** @typedef {typeof FORWARD | typeof BACKWARD} Direction */
+/** @typedef {Compiler.AST.RegularElement | Compiler.AST.SvelteElement | Compiler.AST.Component | Compiler.AST.SvelteComponent | Compiler.AST.SvelteSelf} ScopedClassCandidate */
 
 const NODE_PROBABLY_EXISTS = 0;
 const NODE_DEFINITELY_EXISTS = 1;
@@ -125,7 +126,7 @@ const seen = new Set();
 /**
  *
  * @param {Compiler.AST.CSS.StyleSheet} stylesheet
- * @param {Iterable<Compiler.AST.RegularElement | Compiler.AST.SvelteElement>} elements
+ * @param {Iterable<ScopedClassCandidate>} elements
  */
 export function prune(stylesheet, elements) {
 	walk(/** @type {Compiler.AST.CSS.Node} */ (stylesheet), null, {
@@ -234,7 +235,7 @@ function truncate(node) {
 /**
  * @param {Compiler.AST.CSS.RelativeSelector[]} relative_selectors
  * @param {Compiler.AST.CSS.Rule} rule
- * @param {Compiler.AST.RegularElement | Compiler.AST.SvelteElement} element
+ * @param {ScopedClassCandidate} element
  * @param {Direction} direction
  * @param {number} [from]
  * @param {number} [to]
@@ -429,7 +430,7 @@ const regex_backslash_and_following_character = /\\(.)/g;
  *
  * @param {Compiler.AST.CSS.RelativeSelector} relative_selector
  * @param {Compiler.AST.CSS.Rule} rule
- * @param {Compiler.AST.RegularElement | Compiler.AST.SvelteElement} element
+ * @param {ScopedClassCandidate} element
  * @param {Direction} direction
  * @returns {boolean}
  */
@@ -636,6 +637,14 @@ function relative_selector_might_apply_to_node(relative_selector, rule, element,
 
 			case 'TypeSelector': {
 				if (
+					element.type === 'Component' ||
+					element.type === 'SvelteComponent' ||
+					element.type === 'SvelteSelf'
+				) {
+					break;
+				}
+
+				if (
 					element.name.toLowerCase() !== name.toLowerCase() &&
 					name !== '*' &&
 					element.type !== 'SvelteElement'
@@ -704,7 +713,7 @@ function test_attribute(operator, expected_value, case_insensitive, value) {
 }
 
 /**
- * @param {Compiler.AST.RegularElement | Compiler.AST.SvelteElement} node
+ * @param {ScopedClassCandidate} node
  * @param {string} name
  * @param {string | null} expected_value
  * @param {string | null} operator
@@ -724,6 +733,24 @@ function attribute_matches(node, name, expected_value, operator, case_insensitiv
 			} else {
 				return true;
 			}
+		}
+		if (attribute.type === 'ScopedClassDirective' && name_lower === 'class') {
+			if (expected_value === null) return true;
+			if (attribute.value === true) continue;
+
+			if (
+				Array.isArray(attribute.value) &&
+				attribute.value.length === 1 &&
+				attribute.value[0].type === 'Text'
+			) {
+				if (test_attribute(operator, expected_value, case_insensitive, attribute.value[0].data)) {
+					return true;
+				}
+
+				continue;
+			}
+
+			return true;
 		}
 
 		if (attribute.type !== 'Attribute') continue;

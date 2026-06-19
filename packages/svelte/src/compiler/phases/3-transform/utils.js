@@ -6,12 +6,31 @@ import {
 	regex_not_whitespace,
 	regex_starts_with_whitespaces
 } from '../patterns.js';
+import * as b from '#compiler/builders';
 import * as e from '../../errors.js';
 import { walk } from 'zimmerframe';
 import { extract_identifiers } from '../../utils/ast.js';
 import check_graph_for_cycles from '../2-analyze/utils/check_graph_for_cycles.js';
 import is_reference from 'is-reference';
 import { set_scope } from '../scope.js';
+
+/**
+ * @param {Expression} value
+ * @param {string} hash
+ */
+export function build_scoped_class_value(value, hash) {
+	if (value.type === 'Literal') {
+		if (typeof value.value === 'string') {
+			return value.value ? b.literal(`${value.value} ${hash}`) : value;
+		}
+
+		if (value.value == null || value.value === false) {
+			return value;
+		}
+	}
+
+	return b.call('$.scoped_class', value, b.literal(hash));
+}
 
 /**
  * Match Svelte 4 behaviour by sorting ConstTag nodes in topological order

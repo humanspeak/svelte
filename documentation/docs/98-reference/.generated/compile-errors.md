@@ -839,6 +839,24 @@ The `%name%` rune has been removed
 %name% cannot be used in runes mode
 ```
 
+### scoped_directive_invalid_modifier
+
+```
+`scoped:` directive cannot use modifiers
+```
+
+### scoped_directive_invalid_placement
+
+```
+`scoped:` directive can only be used on components
+```
+
+### scoped_directive_missing_value
+
+```
+`scoped:` directive must have a value
+```
+
 ### script_duplicate
 
 ```

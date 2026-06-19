@@ -1401,6 +1401,33 @@ export function snippet_shadowing_prop(node, prop) {
 }
 
 /**
+ * `scoped:` directive can only be used on components
+ * @param {null | number | NodeLike} node
+ * @returns {never}
+ */
+export function scoped_directive_invalid_placement(node) {
+	e(node, 'scoped_directive_invalid_placement', `\`scoped:\` directive can only be used on components\nhttps://svelte.dev/e/scoped_directive_invalid_placement`);
+}
+
+/**
+ * `scoped:` directive cannot use modifiers
+ * @param {null | number | NodeLike} node
+ * @returns {never}
+ */
+export function scoped_directive_invalid_modifier(node) {
+	e(node, 'scoped_directive_invalid_modifier', `\`scoped:\` directive cannot use modifiers\nhttps://svelte.dev/e/scoped_directive_invalid_modifier`);
+}
+
+/**
+ * `scoped:` directive must have a value
+ * @param {null | number | NodeLike} node
+ * @returns {never}
+ */
+export function scoped_directive_missing_value(node) {
+	e(node, 'scoped_directive_missing_value', `\`scoped:\` directive must have a value\nhttps://svelte.dev/e/scoped_directive_missing_value`);
+}
+
+/**
  * `style:` directive can only use the `important` modifier
  * @param {null | number | NodeLike} node
  * @returns {never}

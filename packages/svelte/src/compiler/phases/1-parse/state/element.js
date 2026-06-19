@@ -240,6 +240,7 @@ export default function element(parser) {
 			attribute.type === 'Attribute' ||
 			attribute.type === 'BindDirective' ||
 			attribute.type === 'StyleDirective' ||
+			attribute.type === 'ScopedClassDirective' ||
 			attribute.type === 'ClassDirective'
 		) {
 			// `bind:attribute` and `attribute` are just the same but `class:attribute`,
@@ -651,7 +652,7 @@ function read_attribute(parser) {
 			e.directive_missing_name({ start, end: start + colon_index + 1 }, tag.name);
 		}
 
-		if (type === 'StyleDirective') {
+		if (type === 'StyleDirective' || type === 'ScopedClassDirective') {
 			return {
 				start,
 				end,
@@ -777,6 +778,7 @@ function get_directive_type(name) {
 	if (name === 'bind') return 'BindDirective';
 	if (name === 'class') return 'ClassDirective';
 	if (name === 'style') return 'StyleDirective';
+	if (name === 'scoped') return 'ScopedClassDirective';
 	if (name === 'on') return 'OnDirective';
 	if (name === 'let') return 'LetDirective';
 	if (name === 'in' || name === 'out' || name === 'transition') return 'TransitionDirective';

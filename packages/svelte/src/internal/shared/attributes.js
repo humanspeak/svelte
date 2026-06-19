@@ -47,6 +47,16 @@ export function clsx(value) {
 	}
 }
 
+/**
+ * @param {any} value
+ * @param {string} hash
+ * @returns {any}
+ */
+export function scoped_class(value, hash) {
+	var classname = clsx(value);
+	return classname ? classname + ' ' + hash : classname;
+}
+
 const whitespace = [...' \t\n\r\f\u00a0\u000b\ufeff'];
 
 /**

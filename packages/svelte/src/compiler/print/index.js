@@ -811,6 +811,31 @@ const svelte_visitors = (comments) => ({
 		context.write('}');
 	},
 
+	ScopedClassDirective(node, context) {
+		context.write(`scoped:${node.name}`);
+		for (const modifier of node.modifiers) {
+			context.write(`|${modifier}`);
+		}
+
+		if (node.value === true) {
+			return;
+		}
+
+		context.write('=');
+
+		if (Array.isArray(node.value)) {
+			context.write('"');
+
+			for (const tag of node.value) {
+				context.visit(tag);
+			}
+
+			context.write('"');
+		} else {
+			context.visit(node.value);
+		}
+	},
+
 	StyleDirective(node, context) {
 		context.write(`style:${node.name}`);
 		for (const modifier of node.modifiers) {

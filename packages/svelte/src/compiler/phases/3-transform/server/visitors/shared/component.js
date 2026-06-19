@@ -12,6 +12,7 @@ import {
 import * as b from '#compiler/builders';
 import { is_element_node } from '../../../../nodes.js';
 import { dev } from '../../../../../state.js';
+import { build_scoped_class_value } from '../../../utils.js';
 
 /**
  * @param {AST.Component | AST.SvelteComponent | AST.SvelteSelf} node
@@ -89,22 +90,22 @@ export function build_inline_component(node, expression, context) {
 		} else if (attribute.type === 'SpreadAttribute') {
 			let expression = /** @type {Expression} */ (context.visit(attribute));
 			props_and_spreads.push(optimiser.transform(expression, attribute.metadata.expression));
-		} else if (attribute.type === 'Attribute') {
-			const value = build_attribute_value(
-				attribute.value,
-				context,
-				optimiser.transform,
-				false,
-				true
-			);
+		} else if (attribute.type === 'Attribute' || attribute.type === 'ScopedClassDirective') {
+			let value = build_attribute_value(attribute.value, context, optimiser.transform, false, true);
 
 			if (attribute.name.startsWith('--')) {
+				if (attribute.type === 'ScopedClassDirective') continue;
+
 				custom_css_props.push(b.init(attribute.name, value));
 				continue;
 			}
 
 			if (attribute.name === 'children') {
 				has_children_prop = true;
+			}
+
+			if (attribute.type === 'ScopedClassDirective' && context.state.analysis.css.hash) {
+				value = build_scoped_class_value(value, context.state.analysis.css.hash);
 			}
 
 			push_prop(b.prop('init', b.key(attribute.name), value));

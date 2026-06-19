@@ -74,6 +74,8 @@ export interface ComponentAnalysis extends Analysis {
 	template: Template;
 	/** Used for CSS pruning and scoping */
 	elements: Array<AST.RegularElement | AST.SvelteElement>;
+	/** Component nodes with scoped class props, used for CSS pruning and scoping */
+	scoped_class_nodes: Array<AST.Component | AST.SvelteComponent | AST.SvelteSelf>;
 	runes: boolean;
 	maybe_runes: boolean;
 	tracing: boolean;

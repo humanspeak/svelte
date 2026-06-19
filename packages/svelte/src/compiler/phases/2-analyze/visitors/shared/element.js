@@ -151,6 +151,8 @@ export function validate_element(node, context) {
 					);
 				}
 			}
+		} else if (attribute.type === 'ScopedClassDirective') {
+			e.scoped_directive_invalid_placement(attribute);
 		}
 	}
 }
