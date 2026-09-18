@@ -179,7 +179,7 @@
     "aria-query": "5.3.1",
     "axobject-query": "^4.1.0",
     "clsx": "^2.1.1",
-    "devalue": "^5.8.1",
+    "devalue": "^5.9.1",
     "esm-env": "^1.2.1",
     "esrap": "^2.2.11",
     "is-reference": "^3.0.3",
